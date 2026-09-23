@@ -1,0 +1,95 @@
+{
+  "source": "Historical 15sccg.pdf, 12-page draft",
+  "images": [
+    {
+      "file": "assets/figure-01.png",
+      "sha256": "621479152acf8950a1928ca8205b0fa91d6fca2725a061edf906efc98cc59926",
+      "dimensions": [
+        2910,
+        1748
+      ],
+      "published_page": 1,
+      "published_resource": "/Im0"
+    },
+    {
+      "file": "assets/figure-03-source.jpg",
+      "sha256": "8b4fcd985090ff4370c10113624b85f6100c94d4feab99943cd97ffa176b960f",
+      "dimensions": [
+        360,
+        288
+      ],
+      "published_page": 3,
+      "published_resource": "/Im1"
+    },
+    {
+      "file": "assets/figure-05-left.jpg",
+      "sha256": "444de23c7ce61e13bdf6f50662918c26d9064adf6dab7f4bd1d875e894989a26",
+      "dimensions": [
+        1500,
+        1000
+      ],
+      "published_page": 4,
+      "published_resource": "/Im0"
+    },
+    {
+      "file": "assets/figure-05-right.jpg",
+      "sha256": "5e15262b47e966dffdbd860c4bb63b5bf1748dd29bd15eb27c0e473b07492a0f",
+      "dimensions": [
+        1500,
+        1000
+      ],
+      "published_page": 4,
+      "published_resource": "/Im1"
+    },
+    {
+      "file": "assets/table-02-grass-2.jpg",
+      "sha256": "7bd91bea7e28f33db94d1f00b4041e4e8785118436014132222754c92b66cff8",
+      "dimensions": [
+        610,
+        610
+      ],
+      "published_page": 8,
+      "published_resource": "/Im0"
+    },
+    {
+      "file": "assets/table-02-grass-3.jpg",
+      "sha256": "a2e1459c68c662e7efa89c949eb58d33d3e3cf9514851db951caf8a69495c6db",
+      "dimensions": [
+        610,
+        610
+      ],
+      "published_page": 8,
+      "published_resource": "/Im1"
+    },
+    {
+      "file": "assets/table-02-fence.jpg",
+      "sha256": "cbd329b71ea8dfa5b175041c58ab1269e40978bd8d46d3285338659f16bb18e3",
+      "dimensions": [
+        610,
+        610
+      ],
+      "published_page": 8,
+      "published_resource": "/Im2"
+    },
+    {
+      "file": "assets/table-02-shrubs.jpg",
+      "sha256": "10e8ba72c3363a28eef073ed6df3d60437f3583d8036c242d58dc2ece7c1cfd8",
+      "dimensions": [
+        610,
+        610
+      ],
+      "published_page": 8,
+      "published_resource": "/Im3"
+    },
+    {
+      "file": "assets/table-02-tree-in-rain.jpg",
+      "sha256": "d444cafb6a90f0e3ca14c7cbdd8aef52396f7dfe89bf26ef8eccab14c0b5851e",
+      "dimensions": [
+        610,
+        610
+      ],
+      "published_page": 8,
+      "published_resource": "/Im4"
+    }
+  ]
+}

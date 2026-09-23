@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: Please cite the original article using the preferred citation below.
+title: Dynamic Texture Editing - research companion
+type: dataset
+authors:
+  - family-names: Richtr
+    given-names: Radek
+  - family-names: Haindl
+    given-names: Michal
+preferred-citation:
+  type: conference-paper
+  title: Dynamic Texture Editing
+  year: 2015
+  doi: 10.1145/2788539.2788559
+  authors:
+    - family-names: Richtr
+      given-names: Radek
+    - family-names: Haindl
+      given-names: Michal
