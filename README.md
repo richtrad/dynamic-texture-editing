@@ -37,7 +37,8 @@ Download [figures.zip](figures.zip) for the native images in its `assets/` folde
 | Citation | `CITATION.cff` and `citation.bib` |
 | Matched higher-resolution images | Nine components in [figures.zip](figures.zip) |
 | Original LaTeX | Historical file located; final-version reconciliation pending |
-| Original videos and data | Archive located; download and figure-to-video mapping pending |
+| Verified historical videos | Four companions in [`media/`](media/) with [metadata and provenance](MEDIA.md) |
+| Other archive candidates | Kept private until their figure mapping is resolved |
 | Historical implementation | Not yet recovered |
 
 The published paper has eight pages. A twelve-page local draft is a source of candidate images, not a replacement for the published text. The restored manuscript will be labelled separately and accompanied by a change log.

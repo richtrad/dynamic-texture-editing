@@ -1,0 +1,40 @@
+{
+  "purpose": "Verified historical video companions for Dynamic Texture Editing (SCCG 2015).",
+  "source_archive": "15cssg_videa/OK in the author's private archive",
+  "selection_rule": "Only files with a frame-level or direct semantic match to a published figure/table are included here.",
+  "files": [
+    {
+      "path": "media/time.mpg",
+      "sha256": "ce0c69f95fab633c87d8c5e6d990ad3793ac8b6b93624a18e57ff70bd6efcb8d",
+      "size_bytes": 1087488,
+      "video": "1108 x 500, 29.970 fps, 61 frames, 2.035 s",
+      "relation": "Figure 9: the frame itself is titled 'Enlarged texture (time shift)'."
+    },
+    {
+      "path": "media/grass20.mpg",
+      "sha256": "caa4fd396d459ee80c8f916fc2db8445373101e2e9f36ae772ec1043780b4614",
+      "size_bytes": 1488896,
+      "video": "1028 x 500, 29.970 fps, 85 frames, 2.836 s",
+      "relation": "Table 2 / Grass2: 617 RANSAC inliers from 720 ORB ratio-test matches to the recovered raster."
+    },
+    {
+      "path": "media/fence_full0.mpg",
+      "sha256": "8aaa57305c423a7c1b342db98af1f5789024ce3ee9a2c1f7dd04757cc8c662b6",
+      "size_bytes": 1634304,
+      "video": "1132 x 608, 29.970 fps, 91 frames, 3.036 s",
+      "relation": "Table 2 / Fence: 224 RANSAC inliers from 497 ORB ratio-test matches to the recovered raster."
+    },
+    {
+      "path": "media/no3.mpg",
+      "sha256": "fa67b6b32a707dbeaf4bca5545a85d71b6656b5bdf2380a67567454d25a6f342",
+      "size_bytes": 15949824,
+      "video": "1400 x 724, 29.970 fps, 409 frames, 13.647 s",
+      "relation": "Table 2 / Tree in the rain: arrangement no.3, with 360 RANSAC inliers from 424 ORB ratio-test matches to the recovered raster."
+    }
+  ],
+  "limitations": [
+    "The paper's LaTeX names no video files, so the archive-to-publication relation is documented evidence, not a claim of original encoded-master identity.",
+    "The six-file audit also contains no2.mpg and ladvi_full.mpg; their exact figure mapping is unresolved and they are intentionally not included here.",
+    "Figure 10's damaged-grass inpainting video has not yet been identified among the downloaded files."
+  ]
+}
