@@ -4,7 +4,7 @@
 
 Research companion to **Radek Richtr and Michal Haindl**, *Dynamic Texture Editing*, Spring Conference on Computer Graphics (SCCG), 2015.
 
-[Read the paper](https://library.utia.cas.cz/separaty/2016/RO/haindl-0452757.pdf) · [Publication and DOI](https://doi.org/10.1145/2788539.2788559) · [Earlier work: Dynamic Texture Enlargement](https://doi.org/10.1145/2508244.2508245)
+[Read the paper](https://library.utia.cas.cz/separaty/2016/RO/haindl-0452757.pdf) · [Publication and DOI](https://doi.org/10.1145/2788539.2788559) · [Earlier work: Dynamic Texture Enlargement](https://doi.org/10.1145/2508244.2508245) · [Related Heritage article archive: Photorealistic Texture Contextual Fill-In](https://github.com/richtrad/photorealistic-texture-contextual-fill-in)
 
 ![Historical synthesis examples, recovered from the original higher-resolution illustration](preview.jpg)
 
