@@ -37,6 +37,7 @@ Download [figures.zip](figures.zip) for the native images in its `assets/` folde
 | Citation | `CITATION.cff` and `citation.bib` |
 | Matched higher-resolution images | Nine components in [figures.zip](figures.zip) |
 | Original LaTeX | Byte-preserved archival source in [`source/original/`](source/original/) |
+| Typo-only source copy | [`source/edited/`](source/edited/) with an explicit change log |
 | Verified historical videos | Four companions in [`media/`](media/) with [metadata and provenance](MEDIA.md) |
 | Other archive candidates | Kept private until their figure mapping is resolved |
 | Historical implementation | Not yet recovered |
@@ -47,6 +48,11 @@ The archival source is kept separate from the recovered figures and videos. It
 references historical class, image, and bibliography files that were not
 recovered, so it is not presented as a self-contained build or as the exact
 version of record. See [`source/original/SOURCE_INFO.md`](source/original/SOURCE_INFO.md).
+
+For review, [`source/edited/`](source/edited/) contains a conservative typo-only
+working copy and [`CHANGELOG.md`](source/edited/CHANGELOG.md). The original
+source remains authoritative for provenance; no equation, number, citation
+key, figure, table, or experimental claim was changed in the working copy.
 
 ## Citation
 
