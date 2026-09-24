@@ -36,12 +36,17 @@ Download [figures.zip](figures.zip) for the native images in its `assets/` folde
 | Published article | Public institutional PDF linked above |
 | Citation | `CITATION.cff` and `citation.bib` |
 | Matched higher-resolution images | Nine components in [figures.zip](figures.zip) |
-| Original LaTeX | Historical file located; final-version reconciliation pending |
+| Original LaTeX | Byte-preserved archival source in [`source/original/`](source/original/) |
 | Verified historical videos | Four companions in [`media/`](media/) with [metadata and provenance](MEDIA.md) |
 | Other archive candidates | Kept private until their figure mapping is resolved |
 | Historical implementation | Not yet recovered |
 
 The published paper has eight pages. A twelve-page local draft is a source of candidate images, not a replacement for the published text. The restored manuscript will be labelled separately and accompanied by a change log.
+
+The archival source is kept separate from the recovered figures and videos. It
+references historical class, image, and bibliography files that were not
+recovered, so it is not presented as a self-contained build or as the exact
+version of record. See [`source/original/SOURCE_INFO.md`](source/original/SOURCE_INFO.md).
 
 ## Citation
 

@@ -1,0 +1,589 @@
+% 31st Spring Conference on Computer Graphics (SCCG 2015)
+% Smolenice April 22-24, 2015
+% http://www.sccg.sk/
+% 8 pages
+% Computers & Graphics journal, Elsevier, ISSN: 0097-8493, Impact Factor: 1.029
+% Source Normalized Impact per Paper (SNIP): 1.648, SCImago Journal Rank (SJR): 0.612
+\def\adsty{./sty} % MH
+%\def\adri{./img/}  % MH
+\def\adriF{./img_fin/}  % MH
+\def\adrb{../BIB/}
+%\def\adsty{./sty} %% MH
+%% This is file `elsarticle-template-3-num.tex',
+%%
+\documentclass{\adsty/acmsiggraph}
+%\documentclass[review]{acmsiggraph}      % review
+%\documentclass[widereview]{acmsiggraph}  % wide-spaced review
+%\documentclass[preprint]{acmsiggraph}    % preprint
+
+%% Uncomment one of the four lines above depending on where your paper is
+%% in the conference process. ``review'' and ``widereview'' are for review
+%% submission, ``preprint'' is for pre-publication, and ``final'' is for
+%% the version to be printed.
+
+%% These two line bring in essential packages: ``mathptmx'' for Type 1 
+%% typefaces, and ``graphicx'' for inclusion of EPS figures.
+
+\usepackage{mathptmx}
+\usepackage{graphicx}
+
+%% use this for zero \parindent and non-zero \parskip, intelligently.
+
+\usepackage{parskip}
+
+%% If you are submitting a paper to the annual conference, please replace 
+%% the value ``0'' below with your OnlineID. If you are not submitting this
+%% paper to the annual conference, you may safely leave it at ``0'' -- it 
+%% will not be included in the output.
+
+\onlineid{0}
+
+%% need to document this!
+
+\acmformat{print}
+
+
+
+\usepackage{mathptmx}
+\usepackage{graphicx}
+\usepackage{parskip}
+\usepackage{url}  
+\usepackage{color}
+\usepackage{relsize}
+\newcommand{\napoli}[1]{{\color{red} #1}}
+\usepackage[normalem]{ulem}
+\newcommand\redout{\bgroup\markoverwith
+{\textcolor{red}{\rule[.5ex]{2pt}{0.4pt}}}\ULon}
+\newcommand{\strikeout}[1]{\redout{#1}}
+
+
+
+%% The amssymb package provides various useful mathematical symbols
+\usepackage{amssymb}
+%% The amsthm package provides extended theorem environments
+%% \usepackage{amsthm}
+
+\title{Dynamic Texture Editing}
+
+%% Author and Affiliation (single author).
+
+%%\author{Roy G. Biv\thanks{e-mail: roy.g.biv@aol.com}\\Allied Widgets Research}
+
+%% Author and Affiliation (multiple authors).
+
+\author{Radek Richtr\thanks{e-mail:richtr@utia.cas.cz} \hspace{10mm}  Michal Haindl\thanks{e-mail:haindl@utia.cas.cz} \\ 
+The Institute of Information Theory and Automation of the CAS, %
+%\and Michal Haindl\thanks{e-mail:haindl@utia.cas.cz}\\  %
+}
+
+
+%%%%%% START OF THE PAPER %%%%%%
+
+\begin{document}
+
+\teaser{
+  \includegraphics[width=.99\textwidth]{\adriF richtr_img_fig1}
+  \caption{A preview of several edited synthetic dynamic textures.}
+  \label{fig:1}
+}
+
+\maketitle
+
+
+
+\begin{abstract}
+QA fast  simple method for dynamic textures enlargement and editing is presented.
+The resulting  edited dynamic texture is a  mixture  of several colour
+dynamic textures  that realistically matches given colour textures appearance and respects their original optic flow. The method simultaneously allows to spatially and temporarily
+enlarge the original dynamic textures to any required four dimensional dynamic texture space.
+The method is based on a generalization of prominent static double toroid-shaped texture modeling roller method to the dynamic texture domain.
+The presented method keeps  the original static texture roller principle of separated analysis and synthesis parts of the algorithm.
+In analytical parts there are found patches in input textures by an optimal overlapping tiling and subsequent minimum boundary cut.
+The optimal toroid-shaped dynamic texture patches are created in each spatial and time dimension, respectively.
+The spatial dimension tile border is derived by textural features, color-tone, and  minimal overlapping error. The time dimension tile border is detected by minimizing the overlapping error and using the optical flow of the input textures.
+For creating of the mix of the dynamic textures the color space of the patch is edited to satisfy the realistic appearance of synthesized results or border patches which consists more than one type of the texture are found exactly like in one texture analysis patch step considering multi-texture borders.
+Since all time-consuming processing, such as the finding of optimal spatio-temporal triple toroidal patches,  are done in the analytical step which is completely separated from synthesis part, the synthesis of the edited and enlarged resulting texture can by done very efficiently by  applying simple set of repeating rules for these triple toroidal patches.
+Thus the presented method is  extremely fast and capable to synthesize a learned natural  dynamic texture spatially and  its time span in real-time.
+\end{abstract}
+
+\begin{CRcatlist}
+  \CRcat{I.3.3}{Computer Graphics}{Picture/Image Generation}{Display Algorithms}
+  \CRcat{I.3.7}{Computer Graphics}{Three-Dimensional Graphics
+  and Realism}{Color, shading, shadowing, and texture};
+\end{CRcatlist}
+
+%% The ``\keywordlist'' command prints out the keywords.
+\keywordlist
+Computer Graphics,  Dynamic Texture,  Dynamic Texture Editing,  Patch-based Texture Synthesis, Dynamic Texture Modeling, 
+ Image Generation
+ 
+ %----------------------------------------------------------------------------------------------------------
+
+\section{Introduction}
+
+
+
+
+Visual texture  modeling is the critical part  for any computer-based visualization application  because whatever size is the measured  texture, it is always inadequate and requires its
+enlargement to cover the required visualized object's surface area.
+The available material sample size is either too small for rendering  complex and large virtual scenes, if we measure material visual properties of real existing objects, or the measurement technology does not allow us to measure larger material samples.
+The typical example is the recent most advanced  visual surface material representation in the form of the bidirectional texture function~\cite{HaiFil13}.
+ The amount of such measured data similarly to dynamic textures is immense, e.g., in the range of tera bytes even for such spatio-temporally restricted measurements thus any such texture visualization inevitably requires simultaneously enlargement and some compression capability.
+Texture  editing enables to create photo-realistic synthetic textures, which are either difficult to measure or which even do not exist in nature.
+	
+Dynamic (DT)  texture synthesis and editing aims to create a visual texture  which is perceptually similar, ideally visually indiscernible, to the target dynamic texture and has the
+required spatial and temporal extent. The target  texture can be either a measured sample or a set of desired features for the resulting DT.
+Natural DT modeling is a very challenging and difficult task, due to unlimited variety of possible  materials, illumination, and viewing conditions, simultaneously complicated by the strong discriminative functionality of the human visual system.
+
+Dynamic  texture editing  is  useful  process which allows to synthesize alternative and unmeasured types of DTs. It allows to reach huge compression ratio if numerous DTs can be constructed from several basis small DT samples, or to study
+ relationship between model parameters and their impact on visual DT appearance, etc.
+	
+
+\subsection{Dynamic Texture}
+ 
+Similarly to other types of visual textures,
+ there is neither exact definition of the dynamic (or video, temporal)  texture~\cite{HaiFil13}. DT can be characterized by some spatially  invariant statistics
+ like other visual textures	~\cite{Zhu98filters} but additionally to that it requires
+ also some temporal invariance.  DT can be represented as as a realization of a 4D stochastic random field.
+ The two main approaches can by  applied to the dynamic texture modeling - the approach based
+ on the measured data   sampling and the  mathematical model based approach. Typically the modeling by some mathematical probabilistic model is by far less demanding on memory, but  sometimes
+ produces lower visual quality results, while the intelligent sampling methods can produce better quality textures but they need to  store material patches ~\cite{Richtr13}.
+Three major properties~\cite{Dyn_tex_jourmal_dorettoCWS03ijcv} are present in DTs. They  intuitively define
+whole texture - the static texture itself, global dynamics and local dynamics (Fig.~\ref{fig:fig4}). The static texture
+ represents structure of the scene and its objects, the global motion  moving of the whole scene (i.e. rotating or sliding camera), and the local motion  dynamic in the
+texture (small motion, oscillation or overlapping and disappearing of small objects).
+
+%cam-red
+\begin{figure*}[th]	
+	\centering
+ 	\includegraphics[width=.8\textwidth]{\adriF richtr_img_fig2_v2}
+	\caption{The overall flowchart of the presented method.}
+	\label{fig:fig2}
+\end{figure*}		
+%cam-red
+
+Some of the early methods was based on simple particle system, where particles were parts of mapped semitransparent textures with integrating light from the near polygons. Perry and Picard~\cite{Perry94synthesizingflames} modeled flames, similar model Stam~\cite{Stam93turbulentgas,chiba94vissimulation} or Chiba~\cite{chiba94vissimulation} published similar models simulated simple gas phenomena like clouds or smoke. The  method published by Szummer~\cite{Szummer96} was based on spatiotemporal (causal) auto-regressive model  restricted to  gray-scale DT and
+linear dynamic between pixels only.  
+ The Schodl~\cite{Schodl00videotextures} method is restricted to  temporal enlargement based on 
+ similarity and optical flow to find   possible transitions from one frame in the original video clip to another one.  Parts of video with similar texture data and motion are simply played in infinite loops using blur between frames to reduce visually apparent jumps to minimum. 
+ The statistical method by Bar-joseph~\cite{Bar-joseph01texturemixing,Bar-Joseph99statisticallearning}  can create DT  using  wavelet transform and steerable pyramids by direct extend the 2D problem to 3D domain. This method produces new data, but the method is time and space consuming and can produce~\cite{Bar-joseph01texturemixing} both spatially and temporaly limited data. The larger result can be generated only by creating several small ones and concatenating them while blending their boundary frames, this approach often introduces strong optical distraction and excessive blur in the blended frames.   However, this method  can create some type of mix-of-DT output. 
+
+% \cite{Lizarraga-Morales14}  doplnit
+Typical samplig methods~\cite{Schodl00videotextures,Kwatra03graphcuttextures,Phillips03} are based on simple repetition of input data with edge blending and adequate morphing techniques. The repetition is done in spatial or temporal way and may be just frame based~\cite{Schodl00videotextures} of consists time consuming graph-like mincut methods~\cite{Kwatra03graphcuttextures}.
+%cam-red%
+The  Lizarraga-Morales~\cite{Lizarraga-Morales14} patch based approach with iterative greedy-like synthesizing of output creates similar blended results with using of local binary pattern from three orthogonal planes featues, but also lack the adventage of separate analysis and synthesis steps. 
+%cam-red%
+%Many approaches~\cite{Bonet98multiresolutionsampling,Lin07alattice-based,Lin05alattice-based,Efros01imagequilting,Wei00fasttexture} formalize texture like Markov Random Field (MRF).
+Doretto~\cite{Dyn_tex_jourmal_dorettoCWS03ijcv} and Soatto~\cite{Dyn_tex_soatto01} model based method is based on  auto-regressive moving average process and SVD. This method allows to edit the synthesized result by changing model parameters, but parameters are given not by type of texture (i.e. speed or direction for wind, or granularity for water textures), but by model itself and must be interpreted for every given type of a texture.
+ Similarly to static  textures, DT can be modeled  as a mixture of several dynamic textures~\cite{Chan08modelingclustering,ChanV05:0}. These types of textures can be created e.g. by layered dynamic textures~\cite{Chan06layereddynamic}, mix of dynamic
+  textures~\cite{Bar-joseph01texturemixing,ChanV05:0,Chan08modelingclustering}, or by our triple toroid- shaped tiles and optical flow based approach which focus on dynamics and human-eye-observation.
+ Filip~\cite{Filip06FastSynthesis} presented much faster way to synthesize colour textures. Similar results were  presented in ~\cite{ChanV05:0,DynTexSynConstantini,Costantini08higherorder} using tensor decomposition and SVD techniques. 
+
+ %Vidal~\cite{Vidal05opticalflow} , Liu~\cite{LiuLA05} and presented different approaches with good results.
+This paper  presents a new simple method for synthesizing dynamic textures, mix of DTs and DT editing. The possibly infinitely large (in both spatial and temporal dimensions) synthesized texture is created from a noticeably smaller patches of input DTs. The result is seamless, without any strong distortions and does not require any blurring or morphing techniques.
+These properties is achieved through intelligent sampling and subsequent copying patches abreast using simple  adjacency rules.  
+Few  triple toroid-shaped tiles can create numerous noticeably larger synthesized DTs with similar stochastic properties.
+By using toroidal-shaped tile and fitting them by optical flow, the synthesized texture can be recreated from various input textures to generate many types of output textures or even  mix-of-textures.
+ The repetition of the spatial and temporal dimension is suppressed both by using overlapping samples and their random placement in the synthesized texture and temporal deformation of the texture dynamics.
+ This intelligent sampling allows to retain a small enough representative data samples to represent the whole texture. It also allows the creation of the infinitely large seamless output by repeating sequence of these
+toroidal samples. Our method can create large scale of DT types and create results with high quality realistic appearance.
+	
+%cam-red
+Our approach can work with many input DTs types but there are some restrictions. If some perspective distortion is present, the quality of the result can vary widely depending on the severity of distortion (but stil can be synthesized, see Tab. ~\ref{Tab:Tabl1}, third row), DTs with small non periodical color gradient generate optically visible transition on seams because the are not any repetitive parts to find. The strong unpredicted local dynamics with fast disappearing of smal objects can create artifacts to.%o and finally in some cases enlarging of some dimension do not have sense (i.e. candle can be enlarged, but not the light itself). %rychle zmeny (Tab. ~\Ref{tbl:tbl1}, first row). 
+
+%bore restrictively in the input must be some repetitive part (i.e. not sky with even small color gradien). 
+
+%cam-red
+
+\section {Toroidal-Based Texture Model}
+
+The presented enlargement method principle is to find  optimal triple toroid-shaped dynamic texture tiles which can be subsequently seamlessly repeated in dynamic texture data space  spatial and
+ temporal directions.  The method estimates several
+ optimal triple toroid-shaped dynamic texture tiles combining estimated  optical flow
+ and double toroid-shaped dynamic texture frame tiles as described in detail in~\cite{Richtr13} and  
+ it is a part   of the presented method. The overall flowchart of the present method is   
+ illustrated on Fig.~\ref{fig:fig2}.
+%cam-red
+On the scheme the input primary 4D DT frequencies and optimal patch size (2D tile block: size, location) are computed and time properties (Optical flow block)  are parellely analyzed. Ftom the initial analyzation more patches (Multiple (k) 3D animated tiles) and temporal translations (Teporal jumps search)  are found.  From tiles and jump both spatial (Multiple 2D tile search) and temporal (Temporal cut) can be computed and found in both promary and secondary DTs. In the synthesis step the demaged or unwainted parts are covered, or the results are synthesized by randomly generated DT arrangement. 
+%cam-red
+ Although, the principle of the optimal  spatial and temporal cuts detection is similar,
+ the temporal and spatial visual perception differs
+~\cite{Edelman92visualperception,Fahle81spatiotemporalinterpolation}, thus we have developed two  distinct  approaches for the spatial and optical flow driven temporal cuts.
+
+\subsection {Static and Dynamic Double Toroid-Shaped  Tiles}
+	
+\begin{figure}[h]
+	\center
+		\includegraphics[width=0.3\columnwidth]{\adriF /richtr_img1_fig3} \hfil	
+		\includegraphics[width=0.4\columnwidth]{\adriF /richtr_img2_fig3} 		
+		\caption{The double toroid-shaped tile and its source frame texture respectively.}
+		\label{fig:fig3}
+\end{figure}			
+
+The toroid-shaped tile (see Fig.~\ref{fig:fig2}) is a patch from the original data with
+the specific property to have toroidal border condition in each (horizontal, vertical, and temporal)
+dimension. 	 The textural tile is assumed to be indexed on the regular three-dimensional toroidal
+lattice. The lattice size depends on the estimated texture periodicity in all dimensions.
+	
+The optimal tile cut search algorithm which respects its toroidal border condition
+produces a tile which can be seamlessly  repeated in both spatial and the temporal dimensions,
+respectively. Thus  the boundary between two tiles placed abreast is invisible. The main idea of the triple-toroidal tiling
+is to find some relevant and sufficiently representative tiles from the source DT, which can be
+\emph{directly} seamlessly copied to the output DT, where the offset is driven by the tile shape
+placed on the three dimensional lattice of the  tile label.
+
+\begin{figure}	
+	\center
+	 \includegraphics[width=0.4\columnwidth]{\adriF richtr_fig3_img1}
+ 	\includegraphics[width=0.45\columnwidth]{\adriF richtr_fig3_img2}
+	\caption{Left: Dynamic overview. Black arrows: Global dynamics (optical flow) of the whole texture cause moving of every patch; Red arrows: Local patch dynamics (optical flow) which can be different each time and derives small patch-shape changes. Right: Optical flow illustration,  synthesized result (with varying temporal shift ilustrated by the color tone of patches), three patches with different time shift (0, 5 and 10 frames) and different local (arrows) optical flow, respectively. }
+	\label{fig:fig4}
+	\label{fig:T_all}
+\end{figure}
+
+The  static double toroid-shaped tile edges (patches) are found by the roller method~\cite{HaiHat05} and they are combined 
+using their optical flow controlled  propagation throughout the time (see~\cite{Richtr13}). The tiles are fitted to local dynamics (see Fig.~\ref{fig:fig4})
+and subsequently expanded into the triple toroid-shaped forms.
+
+Let us denote  \ $r=\lbrack r_1,r_2, r_3, r_4 \rbrack$ \ a  multiindex, 
+ where the  components are row,   column, spectral (color information and vector of optical flow), and frame indices, respectively. $\bullet$ denotes all values of the corresponding index. 
+ The optimal horizontal and vertical overlaps are found using  the following criterion:
+
+\begin{equation} \label{eq:optimal_overlap}
+		 \zeta_{r}^* = min_{\zeta} \left\{ \frac{1}{\lfloor\zeta\rfloor}\sum_{\forall r \in I_{\zeta}}{\psi_r^{\zeta}}\right\} \enspace ,
+\end{equation}
+where $\lfloor\zeta\rfloor$ denotes the the corresponding overlap area of \ $\zeta$,
+\ $I_{\zeta}$ \ is the  overlap area index set, and 
+\ $\psi_r^{\zeta}$ \ is the $L_2$ norm of the corresponding ($\zeta = h$ horizontal or $\zeta = v$ vertical) 
+overlap error for a multispectral pixel  vector \ $Y_r$.
+
+The optimal size of the tile is found by minimizing the
+overlap error
+$\zeta_{r}^*$ (see (~\ref{eq:optimal_overlap}) or~\cite{HaiHat05}) by the Fourier transformation
+~\cite{HaiHat05} to find the dominant
+texture periodicity (with the weight in every frame, or in one
+representative frame).
+
+The located single frame double toroid-shaped tile  is propagated along the optical flow which represent DT global dynamics  to subsequent frames 
+ to model the textural structures movement.
+The propagated double toroid-shaped tile (see Animated 2D tile block in Fig.~\ref{fig:fig2}) in every frame serves as the \emph{initialization}
+for local modification of such a double toroid-shaped tile to each frame-specificfinal shape.
+Multiple animated 2D tiles (with possibly overlapping) are found in source texture by minimizing an overlap error $ \zeta_{r}^* $ in border areas of patches given advantage of the same global optical flow in the same frames of the  DT. 
+The minimal distance of patches are given by smaller breadth of up/down of left/right overlaps (see block Multiple (k) 2D animated tiles in Fig.~\ref{fig:fig2})
+
+The local dynamics problem is solved by the iterative border elaboration   to  minimize the overlapping border error $ \zeta_{r}^* $  in areas given by roughly animated tiles.	
+An optimal shape for the primary tile is computed by back-propagation  dynamic-programming-like rules
+
+which minimize both spatial \ $(\Psi_{r}^{h+},\Psi_{r}^{v+})$ \  and temporal
+\ $(\Psi_{r}^{h*},\Psi_{r}^{v*})$ \ cut cost:
+\begin{eqnarray*}
+\psi_{r}^{h*} &=&
+	 \psi_{r}^{h*} +  {\min\left\{\psi_{r-[c,0,\bullet,1]}^{h*},\ldots,
+	 \psi_{r+[c,0,\bullet,-1]}^{h*} \right\}}\enspace , \label{oc1} \\
+\psi_{r}^{v*} & = & \psi_{r}^{v*} +  {\min\left\{\psi_{r-[0,c,\bullet,1]}^{v*},\ldots,
+		 \psi_{r+[0,c,\bullet,-1]}^{v*} \right\}}\enspace ,  \label{oc2} \\					
+\Psi_{r}^{h+} & = & \psi_{r}^{h+}  + \min\left\{\psi_{r-[c,1,\bullet,0]}^{h*},\ldots,
+		  \psi_{r+[c,-1,\bullet,0]}^{h*} \right\}\enspace , \label{oc3} \\
+ \Psi_{r}^{v+} & = & \psi_{r}^{v+}  + \min\left\{\psi_{r-[1,c,\bullet,0]}^{v*},\ldots,
+  \psi_{r+[-1,c,\bullet,0]}^{v*} \right\}\enspace . \label{oc4}
+\end{eqnarray*}
+The parameter $c$ is derived by the average of the optical flow from the actual frame to the next frame plus local optical flow in a given patch (usually creates large areas \emph{inside} patch to handle small periodic motion like leaves fluttering). 
+Large optical flow values increase  this parameter value, which allows  greater flexibility and  possibly also significantly larger tile border modifications. This allows  adaptation for  scenes with higher movement dynamics.
+	
+This scheme allows the non-greedy-computation of the double (spatially) toroid-shaped patch in the whole 4D textural space, what  is advantageous in cases where there are several distinct   dynamic textures  moving in spatial directions. % (e.g., moving shore video).   
+In this case the back-propagation is used to find  parts inconvenient of the texture (i.e., parts of the dynamic texture 	 with not sufficiently long patches).  It can also override problems with errors or textural artifacts.
+				
+These restricted search  areas extremely speed up the computation time needed to find
+ the optimal tile shape in comparison to search the whole textural fullspectral space.
+ These areas are beneficial also in avoiding some typical DT modeling problems
+ like artifacts introduced by extremely varying speed   or problems with highly dynamic
+texture (e.g. fire or water) or mix of dynamic textures. In these areas optimal fitting planes can be found.
+In the fitting step the overlap error is computed only by actual spatial data:		
+\begin{eqnarray} 						
+\Psi_{r}^{h+} & = & \psi_{r}^{h+}  + {\min\left\{\psi_{r-[c,1,\bullet,0]}^{h+},\ldots,
+                   \psi_{r+[c,-1,\bullet,0]}^{h+}\right \} }\enspace , \nonumber \\
+\Psi_{r}^{v+} & = & \psi_{r}^{v+}  + {\min\left\{\psi_{r-[1,c,\bullet,0]}^{v+},\ldots,
+		 \psi_{r+[-1,c,\bullet,0]}^{v+} \right\} } \enspace . \nonumber
+\end{eqnarray}
+			
+The major advantage of our approach is the complete separation between  the analysis and the synthesis steps.
+Once patches are found, the output can be synthesize on-the-flow simply by copying toroid-shaped data tiles 
+with the corresponding offsets.
+These tiles are stored in a small tile database which is entirely unrelated to any synthesis application,  so the analysis and synthesis steps are completely separated.
+			
+\subsection{Triple Toroid-Shaped Tile}
+	
+A  temporal cut which allows seamless  tile repetition in the time dimension can be done by the graph-cut algorithm~\cite{Kwatra03graphcuttextures} or by a frame-to-frame loop~\cite{Schodl00videotextures}.
+Our algorithm starts by finding the most similar sets of $o$ frames, which is the most time consuming part of our approach (hence the nearly all-to-all distances are computed). 
+For finding similar frames, we adopt the similarity matrix proposed by Schodl~\cite{Schodl00videotextures}. 
+The minimized error can be chosen as the pixel-to-pixel difference of frames or by some other metric~\cite{Kwatra05textureoptimization} with addition of local optical flow like fourth part of RGB spectral dimension.
+Since the most similar sets of frames are found, our approach creates transition pixel per pixel or by one consistent part of texture to other  given by type of optical flow in the texture (for details see~\cite{Richtr13}).
+
+\begin{figure}
+	\centering
+		\vspace*{1mm}	
+		\includegraphics[width=0.45\columnwidth]{\adriF /richtr_fig5_img1}	%\hspace*{0.1em}
+		\includegraphics[width=0.45\columnwidth]{\adriF /richtr_fig5_img2}	%\hspace*{0.1em}
+		\vspace*{1mm}
+		\caption{Example of combining two very different types of textures (left - river and shrub, right - different color tone of background and focused objects. }
+		\label{fig:fig5}
+\end{figure}
+ 
+\section{Dynamic Texture Editing}
+
+Our approach  allows to edit DT in several ways. The system of toroidal samples allows to apply the textural operators to tone colors, change dynamics or differs texture itself without possibility to affect the homogeneity of the whole DT. For example change the dynamics of one object in the DT require in optimal case area segmentation (which must be consistent in all frames), detection of an object and changing its dynamics.   Our approach allows to skip the segmentation step, since the texture is divided into logically consistent patches (given by spatial similarity and similar dynamics) from previous analysis steps.
+
+\begin{table}
+	\centering
+	\caption{First column: the original texture; second column: enlarged in temporal and one spatial (horizontal) dimension; third column: Enlarged in both spatial and temporal dimensions.}
+	\begin{tabular}{llll}
+		Original & X,T enlarged & X,Y,T enlarged  \\
+		\hline \\
+		\includegraphics[width=0.25\columnwidth]{\adriF /richtr_tbl1_fig_1_1}   	& \includegraphics[width=0.25\columnwidth]{\adriF /richtr_tbl1_fig_1_2}   	& \includegraphics[width=0.25\columnwidth]{\adriF /richtr_tbl1_fig_1_3}    \\
+		\includegraphics[width=0.25\columnwidth]{\adriF /richtr_tbl1_fig_2_1}   	& \includegraphics[width=0.25\columnwidth]{\adriF /richtr_tbl1_fig_2_2}   	& \includegraphics[width=0.25\columnwidth]{\adriF /richtr_tbl1_fig_2_3}  \\
+		\includegraphics[width=0.25\columnwidth]{\adriF /richtr_tbl1_fig_3_1}   	& \includegraphics[width=0.25\columnwidth]{\adriF /richtr_tbl1_fig_3_2}   	& \includegraphics[width=0.25\columnwidth]{\adriF /richtr_tbl1_fig_3_3}  \\
+		\includegraphics[width=0.25\columnwidth]{\adriF /richtr_tbl1_fig_4_1}   		& \includegraphics[width=0.25\columnwidth]{\adriF /richtr_tbl1_fig_4_2} 	& \includegraphics[width=0.25\columnwidth]{\adriF /richtr_tbl1_fig_4_3} \\
+	\end{tabular}
+\label{tbl:O_XT_XYT_examples}
+\end{table}
+
+Elementary, but not trivial type of texture editing is to synthesize texture consisting of multiple input textures (Fig.~\ref{fig:fig5}). The resulting texture is therefore a mix of textures, which can vary in two of the three basic properties of DT - the texture itself (this includes changes in lighting, but also the other conditions - detail, different angle to camera, etc.) and local dynamics (intensity and direction of wind, rain, etc.). It is obvious that the maximal number of possibly  synthesized textures is:
+
+\begin{equation} \label{eq:num_syn}
+	(N_{in\_tex} * N_{p\_per\_tex} ) ^ { (\lceil {w\_tex \over w\_patch} \rceil + 1 ) * ( \lceil {h\_tex \over h\_patch} \rceil + 1 )   } \enspace ,
+\end{equation}
+
+if we assume a constant distribution of patches in input textures. $N_{in\_tex}$ is number of input textures, $N_{p\_per\_tex}$ is average numbers of patches per input texture. Similary ${w\_tex}$ and ${h\_tex}$ are vertical and horisontal size of the synthesized texture respectivelly and ${w\_patch}$ and ${h\_patch}$ are  horisontal and vertical size of patches respectivelly. More generally and because we often use different number of patches in every texture (to ensure better visual appearance of synthesized textures) the  (~\ref{eq:num_syn}) can be simplified to:
+
+\begin{equation} \label{eq:num_syn1}
+	( N_{patches} ) ^ { (\lceil {w\_tex \over w\_patch} \rceil + 1 ) * ( \lceil {h\_tex \over h\_patch} \rceil + 1 )   } \enspace ,
+\end{equation}
+
+where first product in~\ref{eq:num_syn} becomes to $ N_{patches}$ as number of all patches found by analysis part od algorithm. The basic synthesis of the mix of DTs consist just from finding the same triple toroid-shaped tiles or - more accurately - by finding one (or more) optimal triple toroid-shaped tile in one primary DT and finding the minimal cost of placing this shape to other textures by finding optimal time-spatial shift of the optimal shape. If there are many of textures the computational time can by reduced by using texture pyramid, testing only local optical flow, or testing global optical flow first (respectively in backward order).
+	
+\begin{figure}
+	\centering
+	\includegraphics[width=1\columnwidth]{\adriF /richtr_fig7_img1}					
+	\caption{Left: Illustration of the direct mix of DTs with color toning, The two synthesized textures with different color tone are shown. Right: Examples of soome synthesized results without color toning and with color toning. }
+	\label{fig:7}
+\end{figure}
+
+\subsection{Colortone}
+
+Using of more input textures can create problem with slightly different color tone or illumination of input DTs. 
+This problem can be overcome i.e. by tone mapping (see Fig.~\ref{fig:fig6}). 
+The color tone of patches can be fitted to color tone of one input texture, or consensus of all textures. 
+More advanced algorithms and approached can be used in this problem~\cite{Gui02ColurCorrection}, we used very simply but satisfying approach - fitting average R,G,B or H, S, L/V values of one texture to another by per pixel multiplication. 
+This simply approach creates good results in the most of cases (see Fig.~\ref{fig:7}) of synthesized DTs.  
+Optimal shape is computed in the primary texture and found by spatio-temporal shift in the secondary texture. 
+HSV and L parameters (or RGB) are extracted from all input textures. 
+In the synthesis step the color tone of textures are fitted (per pixel) to one input texture to create similar color appearance.  
+By this, the number of possibly synthesized textures grows to:
+
+\begin{equation} \label{eq:num_syn2}
+		N_{in\_tex}^* * ( N_{patches} ) ^ { (\lceil {w\_tex \over w\_patch} \rceil + 1 ) * ( \lceil {h\_tex \over h\_patch} \rceil + 1 )   } \enspace ,
+\end{equation}
+
+where $N_{in\_tex}^*$ is number of input textures (color tones) to which the synthesized result can be mapped (plus possibly consensus of all/subset of textures). In this automatic approach we assume that the input DTs are selected manually and are visually  similar and do not differ drastically in color (i.e. grass and clouds).
+
+\subsection{Mix of Dynamic Textures}
+
+Our triple toroid-shaped approach can handle the mix of DT (see Fig.~\ref{fig:fig5} and previous section) by  random patches placing. 
+Sometimes DTs vary in dynamics or appearance and patches that satisfy the similarity can not be found. 
+In these cases we can use border type of input texture. We assume the existence of the transition (border) between types of DT but also the lack of one (or both) texture itself (see Fig.~\ref{fig:7}-right). 
+In this approach the optimal shape is computed in the primary texture and found by spatio-temporal shift in the secondary textures with different type of DT.
+The random DT arrangement is generated by iterative growing of DT types from two or more arbitrary coordinates. 
+Patches that can't be filled are computed in the second step. For every empty location the best-fit patch are found in the given border textures (marked by violet) by minimizing error cost to \emph{each}  already (even another border patch) completed adjacent patches found before. 
+One (by the types of DT) of four/five (by the exact adjacent patch data) patches are found).
+Although, such   type of the source data is difficult to obtain,   it is visually sufficient to have even a small data sample. 
+%The dominant component which determines the quality of appearance tend to be both major textures.
+The dominant component that determines the quality of the appearance of the synthesized result tend to be both major pure DTs.
+
+For each area labeled as a border  (labeled '??' in Fig~\ref{fig:7}, right) the best fitting patch from border texture is found by minimizing the error between this sample itself and each already completed adjacent sample (the one patch for every location or one patch for every type of surroundings DT). 
+By this the second analysis phase is added, but still the analysis and synthesis step are separated. 
+Border patches can be found for each location of for every type of location (f.e. B type texture on left,  A type texture or right and border texture itself up and down) which drastically reduce computational time.
+
+\begin{figure}
+        \centering
+		\includegraphics[width=0.6\columnwidth]{\adriF /richtr_fig6_img1}
+		\caption{Illustration of the  mix of DTs with border patches.  Three synthesized textures with different DTs are shown (the color tone of textures change are optional).}
+		\label{fig:fig6}
+\end{figure}
+
+In this different approach, the number of possibly synthesized textures by one type is due to nen rectangular shepe af one DT type area
+
+\begin{equation} \label{eq:num_syn3}
+	N_{i} =  N_{in\_tex}^* * ( N_{patches} ) ^ {n\_patch}
+\end{equation}
+
+, where $n\_patch$ is number of (even noncomplete) places for patches of type $i$ type of DT.
+
+\begin{equation} \label{eq:num_syn4}
+	\prod\limits_{i=1}^{DT_{count}} N_{i}+ N_{border}
+\end{equation}
+
+, where  $DT_{count}$ is count of DT type in the synthesized result and  $N_{border}$ is total number of possible combinations of textures border which is typically small (one or two patches for one border patch type).
+
+The finding of border texture (see Fig.~\ref{fig:7}, right) is similar to finding location of optimal triple toroid-shaped tile but need aditional computation. 
+In some cases the minimizing function (~\ref {eq:optimal_overlap}) is not satisfying (imagine two textures which differs in color but are similar in dynamics and structure i.e.textures of leaves or grass with very different color.
+The borders of leaves are always dark, so by minimizing cut lines error the false result can be found). 
+We add color pyramid of whole overlap areas $(1,...,h) \times (1,...,M)$. 
+Many different textural features (like LBP, Harlick and many others) can be used in the similar way.
+
+Finding of border patches can be done in two ways, online and offline. 
+First the sufficient numbers of patches for all DT type are found. 
+Next (see  labels A1, A2 and B1, B2, B3 in Fig.~\ref{fig:7} right). 
+After this borders textures are applied. 
+In offline version border patch for all possible combination of input DT are found (see Fig.~\ref{fig:8} for example of 8-neighborhood border patches). 
+The border patch are fitted to previously found patches by minimizing the eq.~\ref {eq:optimal_overlap} and the temporal cut cost  (for details see~\cite{Richtr13}) with set of proper input textures. 
+In online version for every location is found new border patch (see Fig.~\ref{fig:8} left) in arbitrary order from surrounding patches, even border texture patches found by previous step. 
+Many orders of founding patches are possible i.e. weighted by number of already know neighborhood patches. 
+This allows greater variability of results, but violate the separation of analysis and synthesis. 
+If the assumption of temporal  homogeneity is used, we can presume that temporal optimal overlap can by found in analysis part as preprocess for border texture (as well for another input textures) and space borders can be found later, in synthesis. 
+If complete temporal cut is found first, the spatial cut and fitting  can be found in tens of seconds.
+
+\begin{figure}
+	\centering
+	\vspace*{1mm}	
+ 	\includegraphics[width=0.45\columnwidth]{\adriF /richtr_fig8_img1}	%\hspace*{0.1em}
+ 	\includegraphics[width=0.45\columnwidth]{\adriF /richtr_fig8_img2}	%\hspace*{0.1em}
+	\caption{Left: A scheme of a border texture with 8-neighborhood. Border texture patches are computed by top-down order. New border patches are computed from surroundings patches, even border texture patches found by the previous step. Many orders of founding patches are possible i.e. weighted by number of already know neighborhood patches. }
+	\label{fig:8}
+\end{figure}
+
+
+
+\subsection{Temporal Dimension Editing}
+
+The DTs mixing and editing can be done directly in temporal way too. 
+The input textures can be manually labeled or divided by global and local dynamics (i.e. strong of wind, the density of rain and so on). 
+The patches are then found and divided to smaller patches by this temporal labels with preserving toroidal transition (i.e. \textsc{no rain} $\Rightarrow$ \textsc{begins to rain} as can be seen in Fig.~\ref{fig:fig9}) similar to Markov chain or FSM.  
+This temporal editing and mixing technique can produce very visual quality results, but is very demanding on the quality of input data.
+
+In order to avoid the typical synthesizing problem - periodicity (given by the small amount of input data) - we use the spatial editing methods. 
+Multiple patches, more input DT, mix of DT.
+Besides editing of the spatial dimension to an increase variability we use temporal methods.
+The same samples only slightly time-shifted, although visually similar but different dynamics disrupts their overall impression of their periodicity.
+Simple random time shift of one part of DT can cause many inconsistence in synthesized result. 
+The optimal approach would be a segmentation (consistent in all frames), detection of an object and changing only its dynamics.
+Our approach allows to skip the segmentation step, since the texture is divided into logically consistent patches (given by spatial similarity and similar dynamics) from previous analysis steps and edit the patches separately, but in the border of patch, we change the time factor gradually. 
+We first generate only time indices od pixels and dhet the convolution with gaussian kernel is done in order to soften the time change.
+
+Time shift of patches are applied with maximal change to base time by neighbor patch (Fig.~\ref{fig:T_all}, right) to satisfy consistency of dynamics of the texture. 
+Of course the temporal shift of patches must satisfy global dynamic condition (which is usually satisfied).
+
+\begin{figure}
+	\centering
+	\vspace*{1mm}	
+	\includegraphics[width=0.4\columnwidth]{\adriF /richtr_fig9_img1} \hfill
+ 	\includegraphics[width=0.57\columnwidth]{\adriF /richtr_fig9_img2_v2}	%\hspace*{0.1em}
+% 	\includegraphics[width=1\columnwidth]{\adriF /richtr_fig9_img2}	%\hspace*{0.1em}
+	\caption{Left:  of shifted texture with three identical, time shifted patches, detail are zoomed. The texture is consistent in spatial and temporal dimensions, but vary in local dynamics. (see the video). Right: Example of the labeling one DTs type with rules and probabilities of change of states. }
+	\label{fig:fig9}
+\end{figure}	
+
+
+\section{Results}
+
+The proposed method was extensively tested on DTs  from the DynTex~\cite{dyntex} database (See some results in Tab.~\ref{tbl:O_XT_XYT_examples}).
+The all used DTs were color with resolution up to HD 720 and varying length (from seconds to minutes).
+The analysis usually take from minutes, to hours and strongly depends on length and self-similarity of a texture (due to branch and bound method). 
+The synthesis  time is negligible and are only limited by memory operation and video storing/coding operations.
+
+\vspace{-4mm}
+\paragraph{Time dimension edit}
+We have demonstrated the ability to edit the time dimension of the texture to increase its variability and repetition suppression impression (see Fig.~\ref{fig:fig9}). 
+By using more time jumps in one type of DT the time variability can be enhanced. 
+By labeling the time parts and creating the graph-like structure the approach allows to editing output texture in time and DT type sense as well.
+
+\vspace{-4mm}
+\paragraph{Video editing (Inpainting)}
+Since our solution is able to create arbitrarily large textures from a relatively small sample of data it can be used to repair improper parts of DT (see Fig.~\ref{fig:fig10}).
+The any synthesized texture can be repaired from artifact simply by ignoring patch with these artifacts.
+This  can be used for example in editing video containing a DT. 
+The DTs area in texture is simply replace by the (different or the same) synthesized DTs or only minimal sufficient number of patches are used for covering a unwanted area.
+
+\vspace{-4mm}
+\paragraph{Mix of textures}
+We have demonstrated the capability of creating the mix of DTs from more input DTs. 
+The similarity in the structure of DTs allows usability of the same patch shape, the similarity in the DT type guarantees similar dynamics. 
+The small difference in DTs appearance can be handle mi mapping color tones, which can also be used to intensify the variability of output (i.e. adding a faint shadow, slightly different flower color, and so on) too. 
+If DT types varying strongly in its structure, the border texture (if exists) can be used to connect both DT type in the synthesized results. Tab.~\ref{tbl:tbl2} show examples of the mix of DTs. 
+The small pictures are input DTs, the big one is given result.
+\textsc{Grass2} and  \textsc{Grass3} show random mixing prom two and three input DTs respectively. 
+The \textsc{Shrubs} and  \textsc{Fence} show two DT type with very different structure and/or color.
+\textsc{Tree in the rain} show mix of DTs witch exactly the same scheme on Fig.~\ref{fig:8}. 
+All input texture is in HD 720 format, uncompressed and from our own database.
+
+\begin{figure}
+	\centering
+	\vspace*{1mm}	
+ 	\includegraphics[width=0.32\columnwidth]{\adriF /richtr_fig10_img1}	%\hspace*{0.1em}	
+	\includegraphics[width=0.32\columnwidth]{\adriF /richtr_fig10_img2}	%\hspace*{0.1em}
+
+	\includegraphics[width=0.32\columnwidth]{\adriF /richtr_fig10_img3}	%\hspace*{0.1em}
+	\includegraphics[width=0.32\columnwidth]{\adriF /richtr_fig10_img4}	%\hspace*{0.1em}
+	\caption{Example of simple video editing - the area with 'damaged' grass (top, left) is repaired by filling whole texture by another texture.}
+	\label{fig:fig10}
+\end{figure}	
+
+\begin{table*}
+	\caption{Mix of DT: \textsc{Grass2} and \textsc{Grass3} are synthesized by random placing of tiles. \textsc{Fence}, \textsc{Shrubs} and \textsc{Tree in the rain}  are mix of DT with border texture. Smaller(scaled) figures are input DT, larger figures are synthesized output.}
+	\begin{tabular}{lllll}
+	\textsc{Grass2} & \textsc{Grass3} & \textsc{Fence} & \textsc{Shrubs} & \textsc{Tree in the rain}\\
+	\includegraphics[width=0.37\columnwidth]{\adriF /richtr_fig11_img1}   	& \includegraphics[width=0.37\columnwidth]{\adriF /richtr_fig11_img2} &
+	\includegraphics[width=0.39\columnwidth]{\adriF /richtr_fig11_img3}   	& \includegraphics[width=0.37\columnwidth]{\adriF /richtr_fig11_img4} &
+	\includegraphics[width=0.37\columnwidth]{\adriF /richtr_fig11_img5}   	 \\
+	\end{tabular}
+\label{tbl:tbl2}
+\end{table*}
+
+\vspace{-4mm}
+\paragraph{Mix of textures in input texture}
+Our method can easily handle input textures containing  more DTs types.  
+In these cases, our algorithm selects only one type of DT. 
+This is caused by the toroidal property, which is usually fulfilled only from patches of the same type of DT.		
+
+\section {Summary}
+We have proposed a new approach for fast 4D dynamic multispectral textures  synthesis and editing based on toroid-shaped  tiles. 
+The synthesized examples illustrate good performance of our approach  for many types of DT.  
+Our approach can edit temporal and spatial properties of DT and can easily create a  mix of dynamic textures as shown. 
+We have demonstrated also some DT modeling problems and our solution for them. 
+The method is simple, it can generate  infinitely long textures in all dimension and what is the most important it has completely separated analysis and synthesis part hence the synthesis can be done very quickly and effectively. 
+In the coming work  we will improve our algorithm by computing perspective translation to overcome this problem and add  more types of texture tiles with different shapes to create better mix of DTs.
+
+%--------------------------------------------------------------------------
+\section*{Acknowledgments}
+\noindent
+This research was supported by the Czech Science Foundation  project  GA\v{C}R 14-10911S.
+
+
+%% References with bibTeX database:
+
+%\bibliographystyle{\adri bibst}
+\bibliographystyle{\adsty/acmsiggraph}
+%\bibliographystyle{\adsty model3-num-names}
+%\bibliographystyle{\adsty acmsiggraph}
+\bibliography{14sccg_elsa}
+
+%% Authors are advised to submit their bibtex database files. They are
+%% requested to list a bibtex style file in the manuscript if they do
+%% not want to use model3-num-names.bst.
+
+%% References without bibTeX database:
+
+% \begin{thebibliography}{00}
+
+%% \bibitem must have the following form:
+%%   \bibitem{key}...
+%%
+
+% \bibitem{}
+
+% \end{thebibliography}
+
+
+\end{document}
+
+%%
+%% End of file `elsarticle-template-3-num.tex'.
